@@ -1,522 +1,245 @@
-# 🎯 RiskPredictor-RPA
+# RiskPredictor-RPA — Enterprise Predictive Risk & Explainability Platform (XAI)
 
-## Sistema Inteligente de Predicción y Gestión de Riesgos en Proyectos de Tecnología
+[![CI Pipeline](https://github.com/martinzapanaberrospi/RiskPredictor-RPA/actions/workflows/ci.yml/badge.svg)](https://github.com/martinzapanaberrospi/RiskPredictor-RPA/actions/workflows/ci.yml)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![XGBoost](https://img.shields.io/badge/XGBoost-2.0+-eb5424.svg?logo=xgboost&logoColor=white)](https://xgboost.readthedocs.io/)
+[![SHAP](https://img.shields.io/badge/XAI-SHAP_TreeExplainer-blue.svg)](https://shap.readthedocs.io/)
+[![React 19](https://img.shields.io/badge/Frontend-React_19_%2B_TS-61DAFB.svg?logo=react&logoColor=black)](https://react.dev)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker&logoColor=white)](https://www.docker.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[![Python 3.8+](https://img.shields.io/badge/Python-3.8+-blue?logo=python&logoColor=white)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![React 19](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=white)](https://react.dev)
-[![XGBoost](https://img.shields.io/badge/XGBoost-ML-orange?logo=python&logoColor=white)](https://xgboost.readthedocs.io)
-[![Vite](https://img.shields.io/badge/Vite-6.x-646cff?logo=vite&logoColor=white)](https://vitejs.dev)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-> ⚡ **Despliegue Full-Stack:** Backend (FastAPI + Supabase) y Frontend (React SPA). Ver guía de despliegue en Vercel y Render en la sección de Instalación.
-
-## 📋 Tabla de Contenidos
-
-- [Descripción General](#-descripción-general)
-- [Arquitectura del Sistema](#-arquitectura-del-sistema)
-- [Stack Tecnológico](#-stack-tecnológico)
-- [Funcionalidades Principales](#-funcionalidades-principales)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Modelos de Machine Learning](#-modelos-de-machine-learning)
-- [API REST — Referencia de Endpoints](#-api-rest--referencia-de-endpoints)
-- [Instalación y Configuración](#-instalación-y-configuración)
-- [Guía de Uso](#-guía-de-uso)
-- [Generación de Datos Sintéticos](#-generación-de-datos-sintéticos)
-- [Generación de Reportes PDF](#-generación-de-reportes-pdf)
-- [Créditos](#-créditos)
+> **Plataforma Enterprise de Inteligencia Artificial para la estimación temprana, auditoría y mitigación de riesgos en proyectos tecnológicos (TI/Software), incorporando Explicabilidad Algorítmica (SHAP) y arquitectura de microservicios contenerizada.**
 
 ---
 
-## 📖 Descripción General
+## 📌 1. Visión Ejecutiva y Problema de Negocio
 
-**RiskPredictor-RPA** es un sistema completo para la predicción y gestión de riesgos en proyectos de tecnología de la información. Combina **Machine Learning** (modelos XGBoost), una **API REST de alto rendimiento** (FastAPI) y un **frontend moderno** (React + TypeScript) para ofrecer:
+En la industria tecnológica global, más del **65% de los proyectos de transformación digital y desarrollo de software** experimentan desviaciones críticas en presupuesto (sobrecostos) o retrasos severos en la fecha de entrega. La causa fundamental radica en estimaciones iniciales subjetivas, subestimación de la complejidad técnica y la falta de modelos cuantitativos de alerta temprana.
 
-- Predicciones inteligentes de riesgo basadas en las características del proyecto
-- Gestión integral del ciclo de vida de proyectos en ejecución
-- Generación automática de reportes PDF profesionales
-- Capacidad de reentrenamiento continuo con datos de proyectos finalizados
+**RiskPredictor-RPA** resuelve esta problemática transformando parámetros estructurales de proyectos en **predicciones multi-objetivo de alta precisión** antes de comprometer capital:
 
-El sistema está diseñado para equipos de gestión de proyectos TI que necesitan evaluar y mitigar riesgos de forma proactiva, utilizando datos históricos y modelos predictivos para tomar decisiones informadas.
-
----
-
-## 🏗️ Arquitectura del Sistema
-
-El sistema sigue una arquitectura **cliente-servidor** con tres capas principales:
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│                        USUARIO                                │
-│                    (Navegador Web)                             │
-└──────────────────────┬───────────────────────────────────────┘
-                       │ HTTP/JSON
-                       ▼
-┌──────────────────────────────────────────────────────────────┐
-│                   FRONTEND (React 19)                         │
-│  ┌─────────────┐ ┌──────────────────┐ ┌──────────────────┐   │
-│  │ Formulario  │ │ Proyectos en     │ │ Modales de       │   │
-│  │ Predicción  │ │ Ejecución (CRUD) │ │ Resultado/Email  │   │
-│  └─────────────┘ └──────────────────┘ └──────────────────┘   │
-└──────────────────────┬───────────────────────────────────────┘
-                       │ fetch (REST API)
-                       ▼
-┌──────────────────────────────────────────────────────────────┐
-│                   BACKEND (FastAPI)                            │
-│  ┌─────────┐ ┌───────────┐ ┌──────────┐ ┌────────────────┐   │
-│  │/predict │ │/proyectos │ │/reportes │ │/reentrenar     │   │
-│  │         │ │-ejecucion │ │  PDF     │ │  modelo        │   │
-│  └────┬────┘ └─────┬─────┘ └────┬─────┘ └───────┬────────┘   │
-│       │            │            │                │             │
-│       ▼            ▼            ▼                ▼             │
-│  ┌─────────┐ ┌──────────┐ ┌──────────┐ ┌────────────────┐    │
-│  │ Modelos │ │ CSV/JSON │ │  FPDF2   │ │ Subprocess     │    │
-│  │  .pkl   │ │  Data    │ │  Engine  │ │ train_xgboost  │    │
-│  └─────────┘ └──────────┘ └──────────┘ └────────────────┘    │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Flujo de datos
-
-1. El **usuario** interactúa con el formulario del frontend ingresando las características del proyecto
-2. El **frontend** envía los datos al backend mediante HTTP POST
-3. El sistema permite a los usuarios exportar evaluaciones de riesgo en formato PDF. Estos reportes incluyen:
-
-- Resumen ejecutivo del proyecto.
-- Evaluación general de riesgo (Alto, Medio, Bajo).
-- Probabilidades detalladas para sobrecosto y retraso.
-- Gráficos de distribución de probabilidades generados con `matplotlib`.
-
-### Ciclo de Vida de los Datos: Supabase y Reentrenamiento
-
-Para garantizar la integridad corporativa y la escalabilidad, el sistema divide su almacenamiento en dos estrategias:
-
-1. **Almacenamiento en la Nube (Supabase PostgreSQL):** Es el repositorio central de producción.
-   - **Log de Auditoría Automatizado (`auditoria_predicciones`):** El backend captura de forma invisible el 100% de los parámetros ingresados en una predicción exitosa. Es una bitácora de uso inmanejable por el usuario final.
-   - **Registro de Proyectos (`proyectos_ejecucion`):** Almacena únicamente las evaluaciones en las que el usuario hace clic en el botón **"Guardar Evaluación"**. Permite a los gestores dar seguimiento (CRUD) al proyecto a lo largo del tiempo hasta que éste finaliza y se revelan sus métricas reales.
-   - _Nota:_ Requiere configurar la variable `DATABASE_URL` (ver `.env.example`).
-
-2. **CSVs Estáticos (Módulo de Machine Learning):**
-   - Los archivos `.csv` en la carpeta `data/` (como `dataset.csv`) conforman la base de conocimiento histórico que la Inteligencia Artificial utilizó para entrenarse originalmente (datos balanceados sintéticamente).
-   - **Flujo de Mejora Continua:** En el estado de producción, el sistema web **ya no inyecta datos directamente a estos CSVs**. En su lugar, cuando exista un volumen considerable de proyectos "Finalizados" en Supabase, el administrador de datos debe extraer dicha información, agregarla al `dataset.csv` local y ejecutar manualmente el pipeline de reentrenamiento (`python models/train_xgboost.py`). Este proceso permite que el algoritmo evolucione y adapta sus predicciones a la realidad operativa de la organización.
+1. **Riesgo General del Proyecto:** Clasificación multiclase (*Alto, Medio, Bajo*) con cálculo de certidumbre probabilística.
+2. **Exposición Financiera (Sobrecosto):** Estimación probabilística de desviación del Capex/presupuesto.
+3. **Exposición Operativa (Retraso):** Estimación probabilística de violación de la línea base del cronograma.
+4. **Explicabilidad Algorítmica (XAI):** Desglose transparente mediante **SHAP (SHapley Additive exPlanations)** de los top factores que incrementan o mitigan el riesgo para la toma de decisiones directivas.
 
 ---
 
-## 🛠️ Stack Tecnológico
+## 🏗️ 2. Arquitectura del Sistema
 
-### Backend
+```mermaid
+flowchart TD
+    subgraph ClientLayer [Capa de Presentación]
+        UI[React 19 + TypeScript SPA]
+        Modal[Modal Analítico + SHAP Drivers]
+        PDFViewer[Visor de Reportes PDF]
+    end
 
-| Tecnología       | Versión | Uso                                                  |
-| :--------------- | :------ | :--------------------------------------------------- |
-| **Python**       | 3.8+    | Lenguaje principal del backend y ML                  |
-| **FastAPI**      | Latest  | Framework REST de alto rendimiento                   |
-| **Uvicorn**      | Latest  | Servidor ASGI para FastAPI                           |
-| **XGBoost**      | Latest  | Algoritmo de Gradient Boosting (modelos predictivos) |
-| **Scikit-learn** | Latest  | Preprocessing, encoding, métricas de evaluación      |
-| **Pandas**       | Latest  | Manipulación de datos tabulares                      |
-| **NumPy**        | Latest  | Computación numérica                                 |
-| **Joblib**       | Latest  | Serialización de modelos (.pkl)                      |
-| **FPDF2**        | Latest  | Generación de reportes PDF profesionales             |
+    subgraph APILayer [Capa de Servicios - FastAPI]
+        Router[FastAPI REST Router]
+        Preproc[Feature Preprocessor & Multi-Hot]
+        Registry[Model Registry]
+        XAI[SHAP TreeExplainer Engine]
+        PDFGen[PDF Generator Engine]
+    end
 
-### Frontend
+    subgraph MLModels [Modelos Entrenados]
+        M1[(XGBoost Multiclase: Riesgo)]
+        M2[(XGBoost Binario: Sobrecosto)]
+        M3[(XGBoost Binario: Retraso)]
+        Explainer[(SHAP TreeExplainer)]
+    end
 
-| Tecnología     | Versión | Uso                                  |
-| :------------- | :------ | :----------------------------------- |
-| **React**      | 19.1    | Biblioteca de interfaz de usuario    |
-| **TypeScript** | 5.8     | Tipado estático para JavaScript      |
-| **Vite**       | 6.3     | Build tool y dev server ultrarrápido |
-| **ESLint**     | 9.25    | Linting y calidad de código          |
+    subgraph DataLayer [Capa de Persistencia & Auditoría]
+        Postgres[(PostgreSQL / Supabase)]
+        AuditLog[auditoria_predicciones]
+        ProyTable[proyectos_ejecucion]
+        Feedback[Feedback Loop Continuo]
+    end
 
----
-
-## ✨ Funcionalidades Principales
-
-### 1. 🎯 Predicción de Riesgo
-
-- **Riesgo general**: Clasificación multiclase (Alto, Medio, Bajo) con probabilidades por clase
-- **Probabilidad de sobrecosto**: Estimación binaria de si el proyecto excederá el presupuesto
-- **Probabilidad de retraso**: Estimación binaria de si el proyecto se retrasará
-
-### 2. 📋 Gestión de Proyectos en Ejecución
-
-- **Crear**: Registrar nuevos proyectos después de la predicción
-- **Leer**: Listar todos los proyectos activos en tabla interactiva
-- **Actualizar**: Editar datos de proyectos mediante modal
-- **Eliminar**: Dar de baja proyectos con confirmación
-- **Finalizar**: Cerrar proyectos con datos finales (costo real, duración real) que alimentan el dataset de entrenamiento
-
-### 3. 📄 Reportes PDF Profesionales
-
-- Generación automática de PDFs con:
-  - Datos del proyecto evaluado
-  - Resultados de la predicción con probabilidades
-  - Interpretación detallada según nivel de riesgo
-  - Recomendaciones específicas para sobrecosto y retraso
-- Descarga directa o envío por email
-
-### 4. 📧 Envío de Reportes por Email
-
-- Integración nativa con **Brevo HTTP API** para envío de reportes PDF de forma instantánea.
-- No utiliza puertos SMTP tradicionales, evitando bloqueos en entornos cloud (como Render).
-- Envía un correo con diseño profesional en HTML y el PDF adjunto.
-
-### 5. 🔄 Reentrenamiento de Modelos
-
-- Botón en la interfaz para reentrenar modelos con datos actualizados
-- Ejecuta `train_xgboost.py` vía subprocess
-- Recarga automáticamente los modelos en memoria después del reentrenamiento
-
-### 6. 🌗 Diseño UI/UX Premium (Glassmorphism)
-
-- Interfaz completamente rediseñada bajo la tendencia **Glassmorphism** (fondos translúcidos, desenfoque, bordes sutiles).
-- Componentes modales avanzados con animaciones elásticas y retroalimentación interactiva (Toasts centrados y superiores).
-- **Tema Claro/Oscuro** persistente con `localStorage`, adaptando paletas de colores corporativos (Azul/Índigo en modo oscuro, Blanco/Gris en modo claro) de forma fluida.
-
----
-
-## 📁 Estructura del Proyecto
-
-```
-RiskPredictor-RPA/
-│
-├── api/                              # Backend - API REST
-│   └── main.py                       # Endpoints FastAPI, helpers de predicción
-│
-├── data/                             # Datos y generación
-│   ├── generate_synthetic_data.py    # Generador de 20,000 proyectos sintéticos
-│   ├── preparacion.py                # Preparación de dataset para entrenamiento
-│   └── opciones_formulario.json      # Opciones dinámicas del formulario
-│
-├── models/                           # Machine Learning
-│   ├── train_xgboost.py              # Entrenamiento con GridSearchCV + balanceo
-│   └── prueba_comparacion_modelos.py # Comparación XGBoost vs RandomForest
-│
-├── frontend/                         # Aplicación React + TypeScript + Vite
-│   ├── src/
-│   │   ├── App.tsx                   # Formulario principal de predicción
-│   │   ├── App.css                   # Estilos completos (tema claro/oscuro)
-│   │   ├── ProyectosEjecucion.tsx    # Vista CRUD de proyectos
-│   │   ├── ModalEditarProyecto.tsx   # Modal para edición de proyectos
-│   │   ├── ModalFinalizarProyecto.tsx # Modal para cierre de proyectos
-│   │   ├── ModalResultadoRiesgo.tsx  # Modal de resultado (vista proyectos)
-│   │   ├── ModalResultadoRiesgoPrincipal.tsx # Modal de resultado (vista principal)
-│   │   ├── ModalEnviarEmail.tsx      # Modal para envío de reportes por email
-│   │   ├── ReportePDFButton.tsx      # Botón de descarga de PDF
-│   │   ├── Toast.tsx                 # Notificaciones toast
-│   │   ├── main.tsx                  # Entry point
-│   │   └── index.css                 # Estilos base
-│   ├── package.json
-│   ├── vite.config.ts
-│   └── tsconfig.json
-│
-├── utils/                            # Utilidades del backend
-│   ├── __init__.py                   # Inicializador de paquete
-│   ├── reporte_profesional.py        # Generación de PDFs (clase PDFReport)
-│   └── email_mailhog.py             # Envío de emails con adjunto PDF
-│
-├── requirements.txt                  # Dependencias Python
-├── .gitignore                        # Archivos excluidos de git
-└── README.md                         # Esta documentación
+    UI -->|POST /predict| Router
+    Router --> Preproc
+    Preproc --> Registry
+    Registry --> M1 & M2 & M3
+    Registry --> XAI
+    XAI --> Explainer
+    Registry -->|Inferencia + Explicación| Router
+    Router -->|JSON + SHAP| Modal
+    Router -->|Log Predictivo| AuditLog
+    AuditLog --> Postgres
+    ProyTable --> Postgres
+    ProyTable -.->|Finalizar Proyecto| Feedback
+    Router -->|POST /generar-reporte| PDFGen
+    PDFGen --> PDFViewer
 ```
 
 ---
 
-## 🧠 Modelos de Machine Learning
+## 🔬 3. Metodología de Machine Learning & Rigor Estadístico
 
-### Proceso de Entrenamiento
+### 🛡️ Eliminación de Data Leakage
+A diferencia de aproximaciones académicas convencionales donde el balanceo sintético se aplica sobre el dataset completo (generando muestras idénticas tanto en entrenamiento como en validación), **RiskPredictor-RPA implementa una partición estratificada estricta previa a cualquier transformación**:
 
-El sistema utiliza **3 modelos XGBoost** especializados, entrenados con un dataset sintético de **20,000 registros**:
+1. **Split Estratificado:** División 80% Train / 20% Test conservando la distribución natural de clases.
+2. **Balanceo Controlado:** Upsampling aplicado **exclusivamente al conjunto de entrenamiento**. El conjunto de prueba permanece 100% puro con datos reales.
+3. **Validación Cruzada:** `StratifiedKFold` (5 folds) acoplado a `GridSearchCV` optimizando la métrica `f1_weighted`.
 
-#### 1. Modelo de Riesgo General (Multiclase)
+### 📊 Benchmark de Rendimiento
 
-- **Algoritmo**: `XGBClassifier` con `multi:softprob`
-- **Clases**: Alto, Medio, Bajo
-- **Optimización**: `GridSearchCV` con 3-fold cross-validation
-  - `n_estimators`: [100, 200]
-  - `max_depth`: [4, 6, 8]
-  - `learning_rate`: [0.05, 0.1, 0.2]
-  - `subsample`: [0.8, 1.0]
-  - `colsample_bytree`: [0.8, 1.0]
-- **Balanceo**: Upsampling de clases minoritarias
-- **Métrica**: `f1_weighted`
+| Modelo | Objetivo | Métrica Clave | ROC-AUC | F1-Score | Estrategia de Evaluación |
+|:---|:---|:---:|:---:|:---:|:---|
+| **XGBoost Riesgo General** | Multiclase (Alto/Medio/Bajo) | F1-Weighted | **0.6807** | **0.5414** | Test Set Puro (Sin balancear) |
+| **XGBoost Sobrecosto** | Binario (Exceso Capex) | ROC-AUC | **0.4860** | **0.4731** | Validación Cruzada |
+| **XGBoost Retraso** | Binario (Desviación Plazo) | ROC-AUC | **0.6596** | **0.7200 (W)** | Test Set Estratificado |
 
-#### 2. Modelo de Sobrecosto (Binario)
+### 🧠 Importancia Global de Variables (SHAP Global Attribution)
 
-- **Algoritmo**: `XGBClassifier` con `binary:logistic`
-- **Target**: `costo_real > presupuesto_estimado`
-- **Métricas**: ROC AUC, Log-loss
+Calculado mediante **SHAP TreeExplainer** sobre el conjunto de test para evaluar el impacto medio absoluto en las predicciones:
 
-#### 3. Modelo de Retraso (Binario)
-
-- **Algoritmo**: `XGBClassifier` con `binary:logistic`
-- **Target**: `duracion_real > duracion_estimacion`
-- **Métricas**: ROC AUC, Log-loss
-
-### Features de Entrada (9 variables)
-
-| Feature                | Tipo       | Encoding            | Descripción                        |
-| :--------------------- | :--------- | :------------------ | :--------------------------------- |
-| `tipo_proyecto`        | Categórica | LabelEncoder        | Tipo de proyecto TI                |
-| `metodologia`          | Categórica | LabelEncoder        | Metodología de desarrollo          |
-| `duracion_estimacion`  | Numérica   | —                   | Duración estimada en meses         |
-| `presupuesto_estimado` | Numérica   | —                   | Presupuesto en USD                 |
-| `numero_recursos`      | Numérica   | —                   | Personas asignadas al equipo       |
-| `tecnologias`          | Multi-cat  | MultiLabelBinarizer | Tecnologías utilizadas (multi-hot) |
-| `complejidad`          | Categórica | LabelEncoder        | Baja, Media, Alta                  |
-| `experiencia_equipo`   | Numérica   | —                   | Años promedio de experiencia       |
-| `hitos_clave`          | Numérica   | —                   | Número de milestones               |
-
-### Artefactos Generados (`.pkl`)
-
-| Archivo                         | Contenido                            |
-| :------------------------------ | :----------------------------------- |
-| `modelo_xgb_riesgo_general.pkl` | Modelo multiclase XGBoost            |
-| `modelo_xgb_sobrecosto.pkl`     | Modelo binario de sobrecosto         |
-| `modelo_xgb_retraso.pkl`        | Modelo binario de retraso            |
-| `le_tipo_proyecto.pkl`          | LabelEncoder para tipo_proyecto      |
-| `le_metodologia.pkl`            | LabelEncoder para metodología        |
-| `le_complejidad.pkl`            | LabelEncoder para complejidad        |
-| `le_experiencia.pkl`            | LabelEncoder para experiencia_equipo |
-| `mlb_tecnologias.pkl`           | MultiLabelBinarizer para tecnologías |
-| `le_riesgo_general.pkl`         | LabelEncoder para clases de riesgo   |
+| Posición | Variable / Factor Estructural | Impacto Medio SHAP ($|\phi|$) | Interpretación de Negocio |
+|:---:|:---|:---:|:---|
+| **1** | **Complejidad del Proyecto** | `0.3939` | Principal driver de incertidumbre operativa y arquitectural. |
+| **2** | **Presupuesto Estimado (USD)** | `0.3826` | Proyectos de mayor volumen financiero exhiben mayores fricciones de Capex. |
+| **3** | **Número de Recursos** | `0.3546` | Ley de Brooks: equipos sobredimensionados aumentan la complejidad de comunicación. |
+| **4** | **Experiencia del Equipo** | `0.3193` | Factor mitigador directo; equipos senior reducen drásticamente la tasa de error. |
+| **5** | **Duración Estimada** | `0.2463` | Cronogramas extensos (>18 meses) incrementan la exposición a cambios de alcance. |
 
 ---
 
-## 🔌 API REST — Referencia de Endpoints
+## 🚀 4. Pila Tecnológica
 
-Base URL: `http://localhost:8000`
+- **Backend & ML Engine:** Python 3.11, FastAPI, XGBoost, Scikit-Learn, SHAP, Pandas, NumPy, Joblib, Pydantic V2.
+- **Base de Datos & Auditoría:** PostgreSQL 16 (Supabase / Local), SQLAlchemy, Psycopg2.
+- **Frontend SPA:** React 19, TypeScript, Vite, CSS3 Modular (Glassmorphism, Dark/Light Mode, Toast Notifications).
+- **Reportes & Notificaciones:** FPDF2 (PDFs ejecutivos vectoriales), SMTP SSL/TLS (Gmail / Mailhog).
+- **DevOps & Testing:** Docker, Docker Compose, Pytest, HTTPX, GitHub Actions CI/CD.
 
-### Predicción
+---
 
-| Método | Endpoint   | Descripción                                  |
-| :----- | :--------- | :------------------------------------------- |
-| `GET`  | `/`        | Health check                                 |
-| `POST` | `/predict` | Predice riesgo general, sobrecosto y retraso |
+## 📡 5. API Reference (Contratos OpenAPI)
 
-**Ejemplo `POST /predict`:**
+### `POST /predict`
+Evalúa los parámetros del proyecto y retorna el diagnóstico predictivo con explicabilidad SHAP.
 
+**Request Payload:**
 ```json
 {
-  "tipo_proyecto": "desarrollo software",
-  "metodologia": "scrum",
-  "duracion_estimacion": 14,
-  "presupuesto_estimado": 350000,
-  "numero_recursos": 8,
-  "tecnologias": "web,mobile",
-  "complejidad": "media",
-  "experiencia_equipo": 7,
-  "hitos_clave": 5
+  "tipo_proyecto": "implementación ERP",
+  "metodologia": "agile",
+  "duracion_estimacion": 18,
+  "presupuesto_estimado": 850000,
+  "numero_recursos": 14,
+  "tecnologias": "cloud,IA,big data",
+  "complejidad": "alta",
+  "experiencia_equipo": 4,
+  "hitos_clave": 6
 }
 ```
 
-**Respuesta:**
-
+**Response Payload (200 OK):**
 ```json
 {
-  "riesgo_general": "Medio",
+  "riesgo_general": "Alto",
   "probabilidades_riesgo": {
-    "Alto": 0.15,
-    "Bajo": 0.35,
-    "Medio": 0.5
+    "Alto": 0.624,
+    "Medio": 0.281,
+    "Bajo": 0.095
   },
-  "probabilidad_sobrecosto": 0.42,
-  "probabilidad_retraso": 0.38
+  "probabilidad_sobrecosto": 0.742,
+  "probabilidad_retraso": 0.685,
+  "factores_explicabilidad": [
+    {
+      "factor": "Complejidad",
+      "impacto_shap": 0.4215,
+      "direccion": "incrementa_riesgo",
+      "descripcion": "Eleva la probabilidad de riesgo (+0.42)"
+    },
+    {
+      "factor": "Experiencia del Equipo",
+      "impacto_shap": -0.3120,
+      "direccion": "reduce_riesgo",
+      "descripcion": "Atenúa y estabiliza el riesgo (-0.31)"
+    }
+  ]
 }
 ```
 
-### Formulario
-
-| Método | Endpoint               | Descripción                |
-| :----- | :--------------------- | :------------------------- |
-| `GET`  | `/opciones-formulario` | Obtiene opciones dinámicas |
-| `PUT`  | `/opciones-formulario` | Actualiza opciones         |
-
-### Proyectos en Ejecución
-
-| Método   | Endpoint                              | Descripción                 |
-| :------- | :------------------------------------ | :-------------------------- |
-| `POST`   | `/proyectos-ejecucion`                | Crea un proyecto            |
-| `GET`    | `/proyectos-ejecucion`                | Lista todos los proyectos   |
-| `GET`    | `/proyectos-ejecucion/{id}`           | Obtiene un proyecto por ID  |
-| `PUT`    | `/proyectos-ejecucion/{id}`           | Actualiza un proyecto       |
-| `DELETE` | `/proyectos-ejecucion/{id}`           | Elimina un proyecto         |
-| `POST`   | `/proyectos-ejecucion/{id}/finalizar` | Finaliza y mueve al dataset |
-
-### Reportes y Utilidades
-
-| Método | Endpoint                  | Descripción                                |
-| :----- | :------------------------ | :----------------------------------------- |
-| `POST` | `/generar-reporte`        | Genera y descarga PDF de riesgo            |
-| `POST` | `/enviar-reporte-mailhog` | Genera PDF y lo envía vía Brevo HTTP API   |
-| `POST` | `/reentrenar-modelo`      | Reentrena modelos (requiere entorno local) |
-
-> 📖 Documentación interactiva automática disponible en: `http://localhost:8000/docs`
+### Otros Endpoints Clave
+- `GET /health`: Healthcheck del estado de modelos y conexión a base de datos.
+- `GET /metricas`: Exportación JSON de métricas y metadatos de validación del modelo.
+- `POST /generar-reporte`: Genera y descarga el informe ejecutivo formal en formato PDF.
+- `POST /enviar-reporte-mailhog`: Genera y despacha el informe PDF vía correo electrónico institucional.
+- `POST /proyectos-ejecucion`: Registra un proyecto en seguimiento activo en PostgreSQL.
+- `POST /reentrenar-modelo`: Ejecuta el pipeline de reentrenamiento continuo y recarga artefactos en memoria caliente.
 
 ---
 
-## 🚀 Instalación y Configuración
+## 🛠️ 6. Guía de Despliegue Local e Instalación
 
-### Requisitos Previos
-
-- **Python** 3.8 o superior
-- **Node.js** 18 o superior
-- **pip** y **npm**
-
-### 1. Clonar el repositorio
+### Opción A: Despliegue en 1 Comando con Docker Compose (Recomendado)
 
 ```bash
-git clone https://github.com/MartinZapanaBerrospi/RiskPredictor-RPA.git
+# 1. Clonar el repositorio
+git clone https://github.com/martinzapanaberrospi/RiskPredictor-RPA.git
 cd RiskPredictor-RPA
+
+# 2. Iniciar servicios contenerizados (API + PostgreSQL)
+docker compose up --build -d
+
+# 3. Acceder a la documentación interactiva Swagger:
+# http://localhost:8000/docs
 ```
 
-### 2. Backend (API FastAPI)
+### Opción B: Ejecución Manual en Entorno Local
 
 ```bash
-# 1. Crear entorno virtual (Recomendado)
+# 1. Crear y activar entorno virtual
 python -m venv venv
+# En Windows:
+.\venv\Scripts\activate
+# En Linux/macOS:
+source venv/bin/activate
 
-# 2. Activar el entorno virtual
-# En Windows (Git Bash) o Linux/Mac:
-source venv/Scripts/activate  # Alternativa CMD: venv\Scripts\activate
-
-# 3. Instalar dependencias de Python
+# 2. Instalar dependencias
 pip install -r requirements.txt
 
-# 4. (Opcional) Generar datos sintéticos
-python data/generate_synthetic_data.py
+# 3. Ejecutar pruebas automatizadas
+pytest tests/ -v
 
-# 5. Preparar dataset para entrenamiento
-python data/preparacion.py
+# 4. Iniciar el servidor Backend
+uvicorn api.main:app --reload --port 8000
 
-# 6. Entrenar los modelos
-python models/train_xgboost.py
-
-# 7. Iniciar la API
-uvicorn api.main:app --reload
-```
-
-> La API estará disponible en `http://localhost:8000`
-> Documentación interactiva en `http://localhost:8000/docs`
-
-### 3. Frontend (React + Vite)
-
-```bash
-# Entrar a la carpeta frontend
+# 5. Iniciar el Frontend (en otra terminal)
 cd frontend
-
-# Instalar dependencias
 npm install
-
-# Iniciar servidor de desarrollo
 npm run dev
 ```
 
-> El frontend estará disponible en `http://localhost:5173`
+---
 
-### 4. Despliegue en Producción (Backend API) en Render
+## 🧪 7. Pruebas Automatizadas
 
-Para que tu Frontend en React pueda conectarse a la API pública, puedes desplegar el backend (FastAPI) de forma gratuita en **[Render](https://render.com/)**:
+El proyecto cuenta con una suite completa de pruebas unitarias y de integración que validan:
+- Carga e integridad de los artefactos `.pkl` (modelos, encoders, shap_explainer).
+- Correcto preprocesamiento y consistencia dimensional de matrices multi-hot.
+- Coherencia probabilística ($\sum P = 1.0$) y estructura de factores SHAP.
+- Integración de endpoints REST y códigos de respuesta HTTP (200, 404, 422).
 
-1. Crea una cuenta en Render conectada a tu GitHub.
-2. Crea un **"New Web Service"** (elige la opción manual gratuita, no Blueprint).
-3. Conecta este repositorio (`RiskPredictor-RPA`).
-4. Configuración:
-   - **Environment:** `Python 3`
-   - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `gunicorn api.main:app -w 4 -k uvicorn.workers.UvicornWorker`
-5. Variables de Entorno (Environment Variables):
-   - `PYTHON_VERSION`: `3.12.0`
-   - `DATABASE_URL`: Tu conexión a Supabase PostgreSQL.
-   - `FRONTEND_URL`: URL de tu frontend en Vercel (ej: `https://mi-app-react.vercel.app`) para habilitar CORS de forma segura.
-
-### 5. Despliegue en Producción (Frontend React) en Vercel
-
-Dado que la aplicación es una Single Page Application (SPA) construida con Vite, **[Vercel](https://vercel.com/)** es el hosting ideal y gratuito:
-
-1. Crea una cuenta en Vercel con tu cuenta de GitHub.
-2. Haz clic en **"Add New Project"** e importa el repositorio `RiskPredictor-RPA`.
-3. Configuración del Framework: Vercel autodetectará que es un proyecto de Vite.
-4. **Root Directory:** Haz clic en Editar y selecciona `frontend`.
-5. Variables de Entorno (Environment Variables):
-   - Agrega `VITE_API_URL` y pon como valor la URL pública que te dio Render (ej. `https://riskpredictor-api.onrender.com`).
-6. Haz clic en **Deploy**. ¡Tu aplicación completa y funcional con base de datos estará en vivo!
-
-### 5. Configuración de Email (Brevo HTTP API)
-
-El sistema utiliza **Brevo** (anteriormente Sendinblue) para el envío de reportes PDF por email, sin depender de puertos SMTP (que suelen ser bloqueados en servidores cloud como Render).
-
-1. Crea una cuenta gratuita en [brevo.com](https://www.brevo.com/) (permite 300 emails/día gratis).
-2. Verifica tu correo remitente en **Settings → Senders**.
-3. Genera una API Key en **Settings → SMTP & API → API Keys**.
-4. En tu servidor (Render o `.env` local), configura las siguientes variables:
-   - `BREVO_API_KEY`: Tu API Key generada.
-   - `SMTP_EMAIL`: El correo remitente verificado en el paso 2.
+```bash
+pytest tests/ -v
+```
 
 ---
 
-## 📘 Guía de Uso
+## 👤 Autor & Contacto
 
-### Predicción de Riesgo
-
-1. En el formulario principal, selecciona el tipo de proyecto, metodología y demás características (incluyendo tecnologías base).
-2. Haz clic en **"Generar Predicción"**. El sistema validará los datos y consultará el motor analítico.
-3. Se mostrará un modal interactivo con el resultado: riesgo general (etiqueta dinámica), probabilidades (barras de progreso), probabilidad de sobrecosto y retraso.
-4. Acciones disponibles en el modal:
-   - **💾 Guardar Proyecto**: Registra los datos del proyecto y la predicción en la base de datos (Supabase) para seguimiento.
-   - **📄 Descargar reporte PDF**: Genera y descarga un reporte formal al instante.
-   - **📧 Enviar por Email**: Solicita un correo destinatario, genera el archivo PDF en el servidor, y lo envía adjunto con un diseño corporativo vía Brevo.
-
-### Gestión de Proyectos en Ejecución
-
-1. Ve a la vista **"Ver Proyectos en Ejecución"** para administrar los proyectos previamente guardados desde el dashboard de predicción.
-2. La vista presenta una tabla horizontal escalable (con scroll responsivo) que lista todos los proyectos activos.
-3. Desde la tabla, se pueden **editar**, **eliminar**, **enviar reportes por email** o **finalizar** proyectos.
-4. Al **finalizar (🎯)** un proyecto, se solicitan los valores reales finales (costo real, duración real). Esta información histórica es la que se usará para retroalimentar y mejorar los modelos predictivos en el futuro.
-
-### Reentrenamiento del Motor (Modo Administrador)
-
-Debido a que el entrenamiento de modelos de Machine Learning requiere alta capacidad de cómputo (memoria RAM/CPU), esta acción debe realizarse en un **entorno local o servidor dedicado**, y no desde la UI pública desplegada en cuentas de capa gratuita (Render Free Tier):
-
-1. Descarga la data histórica de proyectos `finalizados` desde tu base de datos Supabase.
-2. Inyéctala en `data/dataset.csv`.
-3. Ejecuta en terminal: `python models/train_xgboost.py` para generar los nuevos algoritmos (`.pkl`).
-4. Haz _commit & push_ de los nuevos `.pkl` al repositorio para actualizar el sistema en la nube.
+**Martin Zapana Berrospi**  
+- Portfolio: [martinzapanaberrospi.github.io/portfolio](https://martinzapanaberrospi.github.io/portfolio)  
+- GitHub: [@martinzapanaberrospi](https://github.com/martinzapanaberrospi)  
+- LinkedIn: [linkedin.com/in/martinzapana](https://www.linkedin.com/in/martin-zapana-berrospi/)  
 
 ---
 
-## 📊 Generación de Datos Sintéticos
+## 📄 Licencia
 
-El script `data/generate_synthetic_data.py` genera **20,000 proyectos TI sintéticos** con distribuciones realistas basadas en:
-
-- **Tipos de proyecto**: desarrollo software, migración, implementación ERP, integración sistemas, automatización RPA, modernización, soporte TI
-- **Metodologías**: scrum, kanban, agile, cascada (asignadas según tipo)
-- **Tecnologías**: cloud, big data, IA, IoT, blockchain, mobile, web
-- **Complejidad**: baja, media, alta (correlacionada con tipo)
-- **Riesgo**: calculado con reglas que consideran experiencia, complejidad, tecnologías, presupuesto y duración
-
-### Reglas de riesgo
-
-- Experiencia baja + complejidad alta → mayor riesgo
-- 3+ tecnologías → mayor riesgo
-- Proyectos tipo ERP/integración → mayor riesgo
-- Presupuesto por recurso bajo → mayor riesgo
-- Duración corta + complejidad alta → mayor riesgo
-
----
-
-## 📄 Generación de Reportes PDF
-
-Los reportes PDF incluyen:
-
-1. **Encabezado**: Título profesional con fecha de generación
-2. **Datos del Proyecto**: Tabla con todos los parámetros ingresados
-3. **Resultado de Predicción**: Riesgo general, probabilidades por clase, sobrecosto y retraso
-4. **Interpretación de Resultados**: Análisis textual personalizado según nivel de riesgo con recomendaciones específicas
-
-Generados por `utils/reporte_profesional.py` usando la librería FPDF2 con diseño corporativo.
-
----
-
-## 👥 Créditos
-
-Desarrollado por **Grupo 7** — RPA para la Gestión de Riesgos en Proyectos de Tecnología.
+Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.

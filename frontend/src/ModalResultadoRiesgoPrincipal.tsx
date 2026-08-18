@@ -3,11 +3,19 @@ import ReportePDFButton from './ReportePDFButton';
 import ModalEnviarEmail from './ModalEnviarEmail';
 import Toast from './Toast';
 
+interface FactorExplicabilidad {
+  factor: string;
+  impacto_shap: number;
+  direccion: string;
+  descripcion: string;
+}
+
 interface ResultadoRiesgo {
   riesgo_general: string;
   probabilidades_riesgo: Record<string, number>;
   probabilidad_sobrecosto: number;
   probabilidad_retraso: number;
+  factores_explicabilidad?: FactorExplicabilidad[];
 }
 
 interface ModalResultadoRiesgoProps {
@@ -68,7 +76,7 @@ const ModalResultadoRiesgo: React.FC<ModalResultadoRiesgoProps> = ({ open, onClo
       });
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
-        throw new Error(data.detail || 'No se pudo enviar el email. Verifica la configuración SMTP en Render.');
+        throw new Error(data.detail || 'No se pudo enviar el email. Verifica la configuración SMTP.');
       }
       setToast({ message: 'Reporte enviado exitosamente', type: 'success' });
       setModalEmailOpen(false);
@@ -124,7 +132,7 @@ const ModalResultadoRiesgo: React.FC<ModalResultadoRiesgoProps> = ({ open, onClo
           <div className="modal-resultado-header">
             <div>
               <h3>Resultado de Predicción</h3>
-              <p>Motor Analítico — XGBoost</p>
+              <p>Motor Analítico — XGBoost + Explainable AI (SHAP)</p>
             </div>
             <button className="modal-close-btn" onClick={onClose}>✕</button>
           </div>
@@ -179,6 +187,43 @@ const ModalResultadoRiesgo: React.FC<ModalResultadoRiesgoProps> = ({ open, onClo
                 </span>
               </div>
             </div>
+
+            {/* Explainable AI (SHAP Factors) */}
+            {resultado.factores_explicabilidad && resultado.factores_explicabilidad.length > 0 && (
+              <div className="shap-factors-section" style={{ marginTop: '0.85rem', marginBottom: '0.85rem', textAlign: 'left' }}>
+                <p className="prob-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600 }}>
+                  <span>🧠</span> <strong>Explicabilidad IA (Top Factores SHAP)</strong>
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginTop: '0.4rem' }}>
+                  {resultado.factores_explicabilidad.map((f, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        fontSize: '0.82rem',
+                        padding: '0.4rem 0.65rem',
+                        borderRadius: '6px',
+                        background: f.direccion === 'incrementa_riesgo' ? 'rgba(239, 68, 68, 0.08)' : 'rgba(34, 197, 94, 0.08)',
+                        border: `1px solid ${f.direccion === 'incrementa_riesgo' ? 'rgba(239, 68, 68, 0.25)' : 'rgba(34, 197, 94, 0.25)'}`,
+                      }}
+                    >
+                      <span style={{ fontWeight: 500 }}>
+                        {f.direccion === 'incrementa_riesgo' ? '🔺' : '🔻'} {f.factor}
+                      </span>
+                      <span style={{
+                        fontWeight: 600,
+                        fontSize: '0.78rem',
+                        color: f.direccion === 'incrementa_riesgo' ? '#ef4444' : '#22c55e'
+                      }}>
+                        {f.impacto_shap > 0 ? `+${f.impacto_shap.toFixed(2)}` : f.impacto_shap.toFixed(2)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Save Project */}
             <div className="modal-resultado-actions" style={{ marginBottom: '0.75rem' }}>

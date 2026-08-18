@@ -1,0 +1,137 @@
+{
+  "dataset": {
+    "total_registros": 20000,
+    "train_size": 16000,
+    "test_size": 4000,
+    "train_balanced_size": 23337,
+    "features_count": 15,
+    "clases": [
+      "Alto",
+      "Bajo",
+      "Medio"
+    ]
+  },
+  "riesgo_general": {
+    "best_hyperparams": {
+      "colsample_bytree": 1.0,
+      "learning_rate": 0.2,
+      "max_depth": 8,
+      "n_estimators": 200,
+      "subsample": 0.8
+    },
+    "cv_f1_weighted": 0.8088,
+    "test_f1_weighted": 0.5414,
+    "test_roc_auc": 0.6807,
+    "test_logloss": 0.9547,
+    "confusion_matrix": [
+      [
+        130,
+        62,
+        170
+      ],
+      [
+        30,
+        783,
+        880
+      ],
+      [
+        82,
+        588,
+        1275
+      ]
+    ],
+    "classification_report": {
+      "Alto": {
+        "precision": 0.5371900826446281,
+        "recall": 0.35911602209944754,
+        "f1-score": 0.4304635761589404,
+        "support": 362.0
+      },
+      "Bajo": {
+        "precision": 0.5464061409630147,
+        "recall": 0.46249261665682223,
+        "f1-score": 0.5009596928982726,
+        "support": 1693.0
+      },
+      "Medio": {
+        "precision": 0.5483870967741935,
+        "recall": 0.6555269922879178,
+        "f1-score": 0.5971896955503513,
+        "support": 1945.0
+      },
+      "macro avg": {
+        "precision": 0.5439944401272787,
+        "recall": 0.4923785436813959,
+        "f1-score": 0.5095376548691881,
+        "support": 4000.0
+      },
+      "weighted avg": {
+        "precision": 0.5465353274483864,
+        "recall": 0.547,
+        "f1-score": 0.5413716331229362,
+        "support": 4000.0
+      }
+    }
+  },
+  "sobrecosto": {
+    "test_roc_auc": 0.486,
+    "test_logloss": 0.722,
+    "test_f1": 0.4731
+  },
+  "retraso": {
+    "test_roc_auc": 0.6596,
+    "test_logloss": 0.4974,
+    "test_f1": 0.1295
+  },
+  "shap": {
+    "top_features": [
+      {
+        "feature": "Complejidad",
+        "importance": 0.3939
+      },
+      {
+        "feature": "Presupuesto Estimado (USD)",
+        "importance": 0.3826
+      },
+      {
+        "feature": "Número de Recursos",
+        "importance": 0.3546
+      },
+      {
+        "feature": "Experiencia del Equipo",
+        "importance": 0.3193
+      },
+      {
+        "feature": "Duración Estimada (meses)",
+        "importance": 0.2463
+      },
+      {
+        "feature": "Tipo de Proyecto",
+        "importance": 0.1678
+      },
+      {
+        "feature": "Hitos Clave",
+        "importance": 0.1449
+      },
+      {
+        "feature": "Metodología",
+        "importance": 0.1079
+      },
+      {
+        "feature": "Tecnología: BLOCKCHAIN",
+        "importance": 0.0946
+      },
+      {
+        "feature": "Tecnología: IA",
+        "importance": 0.0923
+      }
+    ]
+  },
+  "methodology": {
+    "split_strategy": "Stratified 80/20 (split ANTES del balanceo)",
+    "balancing": "Upsampling solo en training set",
+    "cv_strategy": "Stratified 5-Fold Cross-Validation",
+    "hyperparameter_tuning": "GridSearchCV con F1-weighted",
+    "explainability": "SHAP TreeExplainer"
+  }
+}
