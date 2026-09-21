@@ -81,10 +81,38 @@ def generar_proyecto():
     experiencia = max(1, min(experiencia, 15))
     hitos = np.random.randint(2, 11)
 
-    # Generar costo y duración real con cierta probabilidad de desviación
-    # Proyectos más complejos y con menos experiencia tienden a desviarse más
-    desviacion_costo = np.random.normal(1.0, 0.08 + (0.05 if complejidad == 'alta' else 0) + (0.05 if experiencia < 5 else 0))
-    desviacion_tiempo = np.random.normal(1.0, 0.08 + (0.05 if complejidad == 'alta' else 0) + (0.05 if experiencia < 5 else 0))
+    # Desviación de costo y plazo.
+    #
+    # El proceso generador es deliberadamente explícito: la desviación ESPERADA
+    # depende de factores observables del proyecto (complejidad, experiencia del
+    # equipo, presupuesto por recurso, cantidad de tecnologías, metodología y
+    # duración), y sobre esa media se añade ruido aleatorio.
+    #
+    # Antes, la media era 1.0 para todos los proyectos y solo cambiaba la
+    # varianza: eso hacía que el sobrecosto fuera equivalente a lanzar una
+    # moneda y ningún modelo podía superar el azar (ROC-AUC ~ 0.5).
+    presupuesto_por_recurso = presupuesto / max(recursos, 1)
+    n_tecnologias = len(tecnologias)
+
+    sesgo_costo = 0.0
+    sesgo_costo += {'alta': 0.09, 'media': 0.04, 'baja': 0.0}[complejidad]
+    sesgo_costo += 0.06 if experiencia < 5 else (-0.03 if experiencia > 10 else 0.0)
+    sesgo_costo += 0.05 if presupuesto_por_recurso < 40000 else 0.0
+    sesgo_costo += 0.02 * max(0, n_tecnologias - 2)
+    sesgo_costo += 0.03 if metodologia == 'cascada' else (-0.02 if metodologia in ('scrum', 'kanban') else 0.0)
+    sesgo_costo += 0.03 if tipo in ('implementación ERP', 'integración sistemas') else 0.0
+
+    sesgo_tiempo = 0.0
+    sesgo_tiempo += {'alta': 0.10, 'media': 0.04, 'baja': 0.0}[complejidad]
+    sesgo_tiempo += 0.07 if experiencia < 5 else (-0.03 if experiencia > 10 else 0.0)
+    sesgo_tiempo += 0.05 if duracion < 12 and complejidad == 'alta' else 0.0
+    sesgo_tiempo += 0.02 * max(0, n_tecnologias - 2)
+    sesgo_tiempo += 0.04 if metodologia == 'cascada' else (-0.02 if metodologia in ('scrum', 'kanban') else 0.0)
+    sesgo_tiempo += 0.02 if hitos >= 8 else 0.0
+
+    ruido = 0.08 + (0.05 if complejidad == 'alta' else 0) + (0.05 if experiencia < 5 else 0)
+    desviacion_costo = np.random.normal(0.97 + sesgo_costo, ruido)
+    desviacion_tiempo = np.random.normal(0.96 + sesgo_tiempo, ruido)
     costo_real = int(presupuesto * desviacion_costo)
     duracion_real = int(duracion * desviacion_tiempo)
     costo_real = max(100000, costo_real)

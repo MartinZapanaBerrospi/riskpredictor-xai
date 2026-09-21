@@ -3,7 +3,7 @@
     "total_registros": 20000,
     "train_size": 16000,
     "test_size": 4000,
-    "train_balanced_size": 23337,
+    "train_balanced_size": 22284,
     "features_count": 15,
     "clases": [
       "Alto",
@@ -19,111 +19,111 @@
       "n_estimators": 200,
       "subsample": 0.8
     },
-    "cv_f1_weighted": 0.8088,
-    "test_f1_weighted": 0.5414,
-    "test_roc_auc": 0.6807,
-    "test_logloss": 0.9547,
+    "cv_f1_weighted": 0.7804,
+    "test_f1_weighted": 0.5274,
+    "test_roc_auc": 0.7037,
+    "test_logloss": 1.0494,
     "confusion_matrix": [
       [
-        130,
+        238,
+        53,
+        368
+      ],
+      [
         62,
-        170
+        736,
+        686
       ],
       [
-        30,
-        783,
-        880
-      ],
-      [
-        82,
-        588,
-        1275
+        240,
+        468,
+        1149
       ]
     ],
     "classification_report": {
       "Alto": {
-        "precision": 0.5371900826446281,
-        "recall": 0.35911602209944754,
-        "f1-score": 0.4304635761589404,
-        "support": 362.0
+        "precision": 0.44074074074074077,
+        "recall": 0.3611532625189681,
+        "f1-score": 0.3969974979149291,
+        "support": 659.0
       },
       "Bajo": {
-        "precision": 0.5464061409630147,
-        "recall": 0.46249261665682223,
-        "f1-score": 0.5009596928982726,
-        "support": 1693.0
+        "precision": 0.5855210819411297,
+        "recall": 0.49595687331536387,
+        "f1-score": 0.5370302809193724,
+        "support": 1484.0
       },
       "Medio": {
-        "precision": 0.5483870967741935,
-        "recall": 0.6555269922879178,
-        "f1-score": 0.5971896955503513,
-        "support": 1945.0
+        "precision": 0.5215615070358602,
+        "recall": 0.6187399030694669,
+        "f1-score": 0.5660098522167488,
+        "support": 1857.0
       },
       "macro avg": {
-        "precision": 0.5439944401272787,
-        "recall": 0.4923785436813959,
-        "f1-score": 0.5095376548691881,
+        "precision": 0.5159411099059102,
+        "recall": 0.491950012967933,
+        "f1-score": 0.5000125436836834,
         "support": 4000.0
       },
       "weighted avg": {
-        "precision": 0.5465353274483864,
-        "recall": 0.547,
-        "f1-score": 0.5413716331229362,
+        "precision": 0.5319752880785943,
+        "recall": 0.53075,
+        "f1-score": 0.5274136458941975,
         "support": 4000.0
       }
     }
   },
   "sobrecosto": {
-    "test_roc_auc": 0.486,
-    "test_logloss": 0.722,
-    "test_f1": 0.4731
+    "test_roc_auc": 0.6891,
+    "test_logloss": 0.611,
+    "test_f1": 0.7643
   },
   "retraso": {
-    "test_roc_auc": 0.6596,
-    "test_logloss": 0.4974,
-    "test_f1": 0.1295
+    "test_roc_auc": 0.7997,
+    "test_logloss": 0.5066,
+    "test_f1": 0.598
   },
   "shap": {
     "top_features": [
       {
         "feature": "Complejidad",
-        "importance": 0.3939
-      },
-      {
-        "feature": "Presupuesto Estimado (USD)",
-        "importance": 0.3826
-      },
-      {
-        "feature": "Número de Recursos",
-        "importance": 0.3546
+        "importance": 0.6206
       },
       {
         "feature": "Experiencia del Equipo",
-        "importance": 0.3193
+        "importance": 0.3836
       },
       {
-        "feature": "Duración Estimada (meses)",
-        "importance": 0.2463
+        "feature": "Presupuesto Estimado (USD)",
+        "importance": 0.3165
       },
       {
-        "feature": "Tipo de Proyecto",
-        "importance": 0.1678
-      },
-      {
-        "feature": "Hitos Clave",
-        "importance": 0.1449
+        "feature": "Número de Recursos",
+        "importance": 0.2868
       },
       {
         "feature": "Metodología",
-        "importance": 0.1079
+        "importance": 0.2483
       },
       {
-        "feature": "Tecnología: BLOCKCHAIN",
-        "importance": 0.0946
+        "feature": "Duración Estimada (meses)",
+        "importance": 0.2154
       },
       {
-        "feature": "Tecnología: IA",
-        "importance": 0.0923
+        "feature": "Tipo de Proyecto",
+        "importance": 0.2044
+      },
+      {
+        "feature": "Hitos Clave",
+        "importance": 0.1492
+      },
+      {
+        "feature": "Tecnología: IOT",
+        "importance": 0.0938
+      },
+      {
+        "feature": "Tecnología: BIGDATA",
+        "importance": 0.0921
       }
     ]
   },
