@@ -1,1 +1,1 @@
-# Utils package for RiskPredictor-RPA
+# Utils package for RiskPredictor

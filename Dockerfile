@@ -1,4 +1,4 @@
-# Multi-stage production Dockerfile for RiskPredictor-RPA Analytics API
+# Multi-stage production Dockerfile for RiskPredictor Analytics API
 FROM python:3.11-slim as base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \

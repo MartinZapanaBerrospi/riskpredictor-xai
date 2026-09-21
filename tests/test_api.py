@@ -15,7 +15,7 @@ def test_root_endpoint():
     response = client.get("/")
     assert response.status_code == 200
     data = response.json()
-    assert "RiskPredictor-RPA" in data["sistema"]
+    assert "RiskPredictor" in data["sistema"]
     assert data["version"] == "2.0.0"
 
 

@@ -1,6 +1,6 @@
 # RiskPredictor — Estimación de riesgo en proyectos de TI con explicabilidad
 
-[![CI Pipeline](https://github.com/martinzapanaberrospi/RiskPredictor-RPA/actions/workflows/ci.yml/badge.svg)](https://github.com/martinzapanaberrospi/RiskPredictor-RPA/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/MartinZapanaBerrospi/riskpredictor-xai/actions/workflows/ci.yml/badge.svg)](https://github.com/MartinZapanaBerrospi/riskpredictor-xai/actions/workflows/ci.yml)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![XGBoost](https://img.shields.io/badge/XGBoost-2.0+-eb5424?logo=xgboost&logoColor=white)](https://xgboost.readthedocs.io/)
 [![SHAP](https://img.shields.io/badge/XAI-SHAP%20TreeExplainer-4B8BBE)](https://shap.readthedocs.io/)
@@ -94,7 +94,7 @@ flowchart TD
 ## Estructura del repositorio
 
 ```
-RiskPredictor-RPA/
+riskpredictor-xai/
 ├── data/
 │   ├── generate_synthetic_data.py  # Proceso generador de los datos sintéticos
 │   ├── preparacion.py              # Construye dataset.csv
@@ -118,8 +118,8 @@ RiskPredictor-RPA/
 Requisitos: Python 3.11 o superior y Node.js 18 o superior.
 
 ```bash
-git clone https://github.com/MartinZapanaBerrospi/RiskPredictor-RPA.git
-cd RiskPredictor-RPA
+git clone https://github.com/MartinZapanaBerrospi/riskpredictor-xai.git
+cd riskpredictor-xai
 pip install -r requirements.txt
 ```
 

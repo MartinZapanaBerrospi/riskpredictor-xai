@@ -1,5 +1,5 @@
 """
-RiskPredictor-RPA — Pipeline de Entrenamiento de Modelos XGBoost
+RiskPredictor — Pipeline de entrenamiento de modelos XGBoost
 ================================================================
 Entrena 3 modelos supervisados para predicción de riesgos en proyectos TI:
   1. Riesgo General (multiclase: Alto / Medio / Bajo)

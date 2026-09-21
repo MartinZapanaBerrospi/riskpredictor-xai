@@ -1,5 +1,5 @@
 """
-RiskPredictor-RPA — Enterprise AI Risk Mitigation API
+RiskPredictor — API de estimación de riesgo en proyectos de TI con explicabilidad
 ======================================================
 FastAPI service with Explainable AI (SHAP), PostgreSQL persistence,
 PDF reporting, and automated retraining capabilities.
@@ -198,7 +198,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="RiskPredictor-RPA Analytics Engine",
+    title="RiskPredictor Analytics Engine",
     description="Enterprise Machine Learning platform for predictive project risk assessment and Explainable AI (SHAP).",
     version="2.0.0",
     lifespan=lifespan,
@@ -417,7 +417,7 @@ def _prediccion_to_report_dict(prediccion: dict) -> dict:
 @app.get("/", tags=["Sistema"])
 def root():
     return {
-        "sistema": "RiskPredictor-RPA Analytics API",
+        "sistema": "RiskPredictor Analytics API",
         "version": "2.0.0",
         "status": "online",
         "docs": "/docs",
