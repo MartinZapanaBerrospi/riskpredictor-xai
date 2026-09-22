@@ -24,7 +24,7 @@ class PDFReport(FPDF):
     def header(self):
         self.set_font("Helvetica", "B", 15)
         self.set_text_color(24, 43, 73)
-        self.cell(0, 8, "RiskPredictor RPA — Informe Ejecutivo de Riesgos", ln=True, align="L")
+        self.cell(0, 8, "RiskPredictor RPA - Informe Ejecutivo de Riesgos", ln=True, align="L")
         self.set_font("Helvetica", "", 9)
         self.set_text_color(110, 120, 135)
         self.cell(0, 6, f"Generado por Motor Analítico AI | Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}", ln=True, align="L")
@@ -114,14 +114,14 @@ def generar_reporte_pdf(proyecto, prediccion=None, filename="reporte_riesgo.pdf"
         
         prob_s = prediccion.get("probabilidad_sobrecosto", 0) * 100
         prob_r = prediccion.get("probabilidad_retraso", 0) * 100
-        pdf.section_body(f"• Probabilidad Estimada de Sobrecosto Presupuestario: {prob_s:.1f}%\n• Probabilidad Estimada de Desviación en Cronograma (Retraso): {prob_r:.1f}%")
+        pdf.section_body(f"- Probabilidad Estimada de Sobrecosto Presupuestario: {prob_s:.1f}%\n- Probabilidad Estimada de Desviación en Cronograma (Retraso): {prob_r:.1f}%")
     else:
         pdf.section_body("No se ha registrado una evaluación inferencial previa.")
 
     # 3. Explicabilidad Algorítmica (SHAP)
     factores = prediccion.get("factores_explicabilidad") if prediccion else []
     if factores:
-        pdf.section_title("3. Explicabilidad Algorítmica (Top Drivers de Riesgo — SHAP)")
+        pdf.section_title("3. Explicabilidad Algorítmica (Top Drivers de Riesgo - SHAP)")
         pdf.section_body("Desglose cuantitativo de los factores que tuvieron mayor peso en la decisión del modelo:")
         pdf.add_shap_factors(factores)
 

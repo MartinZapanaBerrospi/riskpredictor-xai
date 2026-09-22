@@ -513,7 +513,8 @@ def add_proyecto_ejecucion(proyecto: dict):
                 ))
                 conn.commit()
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+        print(f"[Database Error]: {e}")
+        raise HTTPException(status_code=500, detail="Error al conectar con la base de datos para guardar el proyecto.")
     return {"status": "ok", "id": proyecto_id}
 
 
@@ -574,7 +575,8 @@ def update_proyecto_ejecucion(proy_id: str, datos: dict):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"[Database Error]: {e}")
+        raise HTTPException(status_code=500, detail="Error de base de datos al actualizar el proyecto.")
 
 
 @app.delete("/proyectos-ejecucion/{proy_id}", tags=["Proyectos"])
@@ -593,7 +595,8 @@ def delete_proyecto_ejecucion(proy_id: str):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"[Database Error]: {e}")
+        raise HTTPException(status_code=500, detail="Error de base de datos al eliminar el proyecto.")
 
 
 @app.post("/proyectos-ejecucion/{proy_id}/finalizar", tags=["Proyectos"])
@@ -622,7 +625,8 @@ def finalizar_proyecto(proy_id: str, datos_finales: dict):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Error en base de datos al finalizar")
+        print(f"[Database Error]: {e}")
+        raise HTTPException(status_code=500, detail="Error al conectar con la base de datos para finalizar el proyecto.")
 
     # Retroalimentación a CSVs para reentrenamiento continuo
     try:

@@ -156,7 +156,9 @@ function App() {
         
         <form onSubmit={handleSubmit} className="risk-form">
         <div className="form-group">
-          <label>Tipo de Proyecto:
+          <label>
+            Tipo de Proyecto:
+            <small style={{ display: 'block', fontSize: '0.8rem', color: '#9ca3af', marginBottom: '6px', fontWeight: 'normal' }}>Clasificación general del proyecto a realizar.</small>
             <select name="tipo_proyecto" value={form.tipo_proyecto} onChange={handleChange} required>
               <option value="">Seleccione...</option>
               {opciones.tipo_proyecto.map((op) => (
@@ -166,7 +168,9 @@ function App() {
           </label>
         </div>
         <div className="form-group">
-          <label>Metodología:
+          <label>
+            Metodología:
+            <small style={{ display: 'block', fontSize: '0.8rem', color: '#9ca3af', marginBottom: '6px', fontWeight: 'normal' }}>Marco de trabajo bajo el cual se gestionará (ej. Agile, Cascada).</small>
             <select name="metodologia" value={form.metodologia} onChange={handleChange} required>
               <option value="">Seleccione...</option>
               {opciones.metodologia && opciones.metodologia.map((op) => (
@@ -176,22 +180,31 @@ function App() {
           </label>
         </div>
         <div className="form-group">
-          <label>Duración Estimada (meses):
+          <label>
+            Duración Estimada (meses):
+            <small style={{ display: 'block', fontSize: '0.8rem', color: '#9ca3af', marginBottom: '6px', fontWeight: 'normal' }}>Tiempo total planificado desde el inicio hasta la entrega.</small>
             <input name="duracion_estimacion" type="number" min="1" value={form.duracion_estimacion} onChange={handleChange} required />
           </label>
         </div>
         <div className="form-group">
-          <label>Presupuesto Estimado:
+          <label>
+            Presupuesto Estimado (USD):
+            <small style={{ display: 'block', fontSize: '0.8rem', color: '#9ca3af', marginBottom: '6px', fontWeight: 'normal' }}>Monto financiero total asignado al proyecto.</small>
             <input name="presupuesto_estimado" type="number" min="1" value={form.presupuesto_estimado} onChange={handleChange} required />
           </label>
         </div>
         <div className="form-group">
-          <label>Número de Recursos:
+          <label>
+            Número de Recursos:
+            <small style={{ display: 'block', fontSize: '0.8rem', color: '#9ca3af', marginBottom: '6px', fontWeight: 'normal' }}>Cantidad total de personas que trabajarán (desarrolladores, QA, PM).</small>
             <input name="numero_recursos" type="number" min="1" value={form.numero_recursos} onChange={handleChange} required />
           </label>
         </div>
         <div className="form-group tecnologias-group-wrapper">
-          <label>Tecnologías:</label>
+          <label>
+            Tecnologías Principales:
+            <small style={{ display: 'block', fontSize: '0.8rem', color: '#9ca3af', marginBottom: '6px', fontWeight: 'normal' }}>Herramientas clave que sustentan la arquitectura del proyecto.</small>
+          </label>
           <div className="tecnologias-group">
             {opciones.tecnologias.map((tec) => (
               <label key={tec}>
@@ -208,21 +221,27 @@ function App() {
           </div>
         </div>
         <div className="form-group">
-          <label>Complejidad:
+          <label>
+            Complejidad Técnica:
+            <small style={{ display: 'block', fontSize: '0.8rem', color: '#9ca3af', marginBottom: '6px', fontWeight: 'normal' }}>Valoración de qué tan difícil será ejecutar el proyecto a nivel técnico.</small>
             <select name="complejidad" value={form.complejidad} onChange={handleChange} required>
-              <option value="baja">Baja</option>
-              <option value="media">Media</option>
-              <option value="alta">Alta</option>
+              <option value="baja">Baja (Múltiples referencias previas)</option>
+              <option value="media">Media (Retos técnicos estándar)</option>
+              <option value="alta">Alta (Innovación o alta incertidumbre)</option>
             </select>
           </label>
         </div>
         <div className="form-group">
-          <label>Experiencia del Equipo (años):
-            <input name="experiencia_equipo" type="number" min="1" value={form.experiencia_equipo} onChange={handleChange} required />
+          <label>
+            Experiencia del Equipo (años):
+            <small style={{ display: 'block', fontSize: '0.8rem', color: '#9ca3af', marginBottom: '6px', fontWeight: 'normal' }}>Promedio de años de experiencia relevante del equipo asignado.</small>
+            <input name="experiencia_equipo" type="number" min="0" step="0.5" value={form.experiencia_equipo} onChange={handleChange} required />
           </label>
         </div>
         <div className="form-group">
-          <label>Número de Hitos Clave:
+          <label>
+            Número de Hitos Clave (Milestones):
+            <small style={{ display: 'block', fontSize: '0.8rem', color: '#9ca3af', marginBottom: '6px', fontWeight: 'normal' }}>Cantidad de entregables mayores planificados (ej. fases o sprints clave).</small>
             <input name="hitos_clave" type="number" min="1" value={form.hitos_clave} onChange={handleChange} required />
           </label>
         </div>
