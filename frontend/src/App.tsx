@@ -48,7 +48,11 @@ function App() {
   const [form, setForm] = useState<any>(initialState);
   const [loading, setLoading] = useState(false);
 
-  const [opciones, setOpciones] = useState<Opciones>({ tipo_proyecto: [], tecnologias: [], metodologia: [] });
+  const [opciones, setOpciones] = useState<Opciones>({
+    tipo_proyecto: ["desarrollo software", "migración", "implementación ERP", "integración sistemas", "automatización RPA", "modernización", "soporte TI"],
+    tecnologias: ["cloud", "big data", "IA", "IoT", "blockchain", "mobile", "web"],
+    metodologia: ["agile", "scrum", "kanban", "cascada"]
+  });
   const [view, setView] = useState<'form' | 'proyectos'>('form');
   const [modalRiesgoOpen, setModalRiesgoOpen] = useState(false);
   const [resultadoRiesgo, setResultadoRiesgo] = useState<any>(null);
@@ -58,7 +62,12 @@ function App() {
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'}/opciones-formulario`)
       .then(res => res.json())
-      .then(setOpciones);
+      .then(data => {
+        if (data && data.tipo_proyecto && data.tipo_proyecto.length > 0) {
+          setOpciones(data);
+        }
+      })
+      .catch(console.error);
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

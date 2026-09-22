@@ -14,6 +14,24 @@ Aplicación de aprendizaje automático que estima, a partir de los parámetros i
 
 ---
 
+## Explicación Detallada del Proyecto
+
+**RiskPredictor** es una plataforma de análisis predictivo (Machine Learning) orientada a la gestión de proyectos de Tecnologías de la Información (TI). Su objetivo principal es ayudar a gerentes de proyecto, directores de TI y tomadores de decisiones a evaluar el nivel de riesgo de un proyecto antes de que inicie o durante sus primeras etapas de planificación.
+
+### ¿Qué hace exactamente?
+
+1. **Recibe parámetros del proyecto:** A través de una interfaz de usuario web (construida en React), el usuario ingresa las características estimadas del proyecto. Esto incluye el presupuesto, la duración estimada, la metodología de trabajo (Agile, Cascada, etc.), el tamaño y la experiencia del equipo, el nivel de complejidad y las tecnologías a usar.
+2. **Genera predicciones con Inteligencia Artificial:** El backend (desarrollado en FastAPI) recibe estos datos y los procesa usando modelos de Machine Learning pre-entrenados basados en **XGBoost**. El sistema evalúa tres objetivos principales:
+   - **Riesgo General:** Clasifica el proyecto en riesgo Alto, Medio o Bajo.
+   - **Probabilidad de Sobrecosto:** Estima qué tan probable es que el proyecto exceda su presupuesto inicial.
+   - **Probabilidad de Retraso:** Estima qué tan probable es que el proyecto no cumpla con los tiempos de entrega.
+3. **Proporciona Explicabilidad (XAI - SHAP):** A diferencia de un modelo de "caja negra" que solo entrega un resultado, RiskPredictor utiliza **SHAP (SHapley Additive exPlanations)** para explicar *por qué* el modelo tomó esa decisión. El sistema detalla, por ejemplo: *"El riesgo es alto principalmente porque el equipo tiene poca experiencia y la complejidad es alta, aunque el presupuesto es adecuado"*.
+4. **Genera reportes y auditoría:** Permite exportar los resultados a un reporte ejecutivo en formato PDF y enviar dicho reporte por correo electrónico. Además, si se configura una base de datos PostgreSQL, guarda el historial de predicciones y permite hacer seguimiento a los proyectos en ejecución, con la posibilidad de reentrenar el modelo a futuro.
+
+En resumen, RiskPredictor es una herramienta integral que transforma la intuición sobre el riesgo de un proyecto en una métrica fundamentada por datos y explicable matemáticamente.
+
+---
+
 ## El problema
 
 Antes de aprobar un proyecto de TI, quien decide tiene pocos datos duros: tipo de proyecto, metodología, duración y presupuesto estimados, tamaño y experiencia del equipo, tecnologías involucradas y número de hitos. La pregunta es si con eso se puede anticipar que el proyecto se desviará, y sobre todo **qué factores pesan** en esa estimación, porque una predicción sin explicación no cambia ninguna decisión.
