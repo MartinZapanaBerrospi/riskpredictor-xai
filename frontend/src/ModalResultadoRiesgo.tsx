@@ -53,7 +53,10 @@ const ModalResultadoRiesgo: React.FC<ModalResultadoRiesgoProps> = ({ open, onClo
           prediccion
         })
       });
-      if (!response.ok) throw new Error('No se pudo enviar el email');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || 'No se pudo enviar el email');
+      }
       setToast({ message: 'Reporte enviado exitosamente', type: 'success' });
       setModalEmailOpen(false);
     } catch (e: any) {

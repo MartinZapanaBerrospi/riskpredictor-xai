@@ -223,7 +223,10 @@ export default function ProyectosEjecucion({ onBack }: ProyectosEjecucionProps) 
           prediccion: null // No hay predicción en la tabla, solo datos del proyecto
         })
       });
-      if (!response.ok) throw new Error('No se pudo enviar el email');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || 'No se pudo enviar el email');
+      }
       setToast({ message: 'Reporte enviado exitosamente', type: 'success' });
       setModalEmailOpen(false);
     } catch (e: any) {
